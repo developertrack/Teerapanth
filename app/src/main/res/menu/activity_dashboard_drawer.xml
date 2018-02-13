@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_myprofile"
+            android:icon="@drawable/myprofile"
+            android:title="My Profile" />
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@drawable/news"
+            android:title="News" />
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/events"
+            android:title="Events" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/gallery"
+            android:title="Gallery" />
+        <item
+            android:id="@+id/nav_workingcomittee"
+            android:icon="@drawable/workingcomittee"
+            android:title="Working Committee" />
+        <item
+            android:id="@+id/nav_membersdirectory"
+            android:icon="@drawable/membersdirectory"
+            android:title="Members Directory" />
+        <item
+            android:id="@+id/nav_wanttobedonor"
+            android:icon="@drawable/wanttobedonor"
+            android:title="Want To Be Donor" />
+
+        <item
+            android:id="@+id/nav_aboutus"
+            android:icon="@drawable/aboutus"
+            android:title="About TYP, Delhi" />
+        <item
+            android:id="@+id/nav_advertisement"
+            android:icon="@drawable/advertisement"
+            android:title="Advertise with us" />
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/contact"
+            android:title="Contact Us" />
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout"
+                android:title="Logout" />
+
+            <item
+                android:id="@+id/nav_usefulllink"
+                android:icon="@drawable/usefulllink"
+                android:title="Useful Links" />
+            <item
+                android:id="@+id/nav_refer"
+                android:icon="@drawable/refer"
+                android:title="My Profile" />
+
+            <item
+                android:id="@+id/nav_rateus"
+                android:icon="@drawable/rateus"
+                android:title="Rate Us" />
+        </menu>
+    </item>
+
+</menu>

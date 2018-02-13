@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Terapanth Yuvak Parishad</string>
+    <string name="title_activity_login_option">LoginOption</string>
+
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_sign_up">REGISTER</string>
+
+    <string name="btn_sign_in">LOG IN</string>
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_password">Enter the password</string>
+    <string name="hint_fname">First Name</string>
+    <string name="hint_lname">Last Name</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="hint_mobnumber">Mobile Number</string>
+    <string name="hint_blood">Blood Group</string>
+    <string name="hint_location">Location</string>
+    <string name="hint_pincode">Pincode</string>
+    <string name="hint_dob">Birth Date</string>
+    <string name="title_activity_dashboard">TERAPANTH YUVAK PARISHAD</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+
+</resources>
