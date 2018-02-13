@@ -85,7 +85,6 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-//            dob.setText(ConverterDate.ConvertDate(year, month + 1, day));
            dob.setText(year + " / " + (month + 1) + " / "
                     + day);
         }
