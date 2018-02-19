@@ -15,8 +15,16 @@ import android.view.MenuItem;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import ss.com.bannerslider.banners.Banner;
+import ss.com.bannerslider.banners.DrawableBanner;
+import ss.com.bannerslider.banners.RemoteBanner;
+import ss.com.bannerslider.views.BannerSlider;
+import utils.UserSessionManager;
 
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +34,7 @@ public class Dashboard extends AppCompatActivity
     private static int NUM_PAGES = 0;
     private static final Integer[] IMAGES= {R.drawable.banner_first,R.drawable.banner_second,R.drawable.banner_third,R.drawable.banner_fourth};
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
+    UserSessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +52,9 @@ public class Dashboard extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        session=new UserSessionManager(Dashboard.this);
+
+
         init();
     }
 
@@ -56,27 +68,6 @@ public class Dashboard extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -84,9 +75,10 @@ public class Dashboard extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 //
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_logout) {
+           session.logoutUser();
+        }
+//        else if (id == R.id.nav_gallery) {
 //
 //        } else if (id == R.id.nav_slideshow) {
 //
@@ -104,65 +96,16 @@ public class Dashboard extends AppCompatActivity
     }
 
 
-    private void init() {
-        for(int i=0;i<IMAGES.length;i++)
-            ImagesArray.add(IMAGES[i]);
+    private void init(){
+        BannerSlider bannerSlider = (BannerSlider) findViewById(R.id.banner_slider1);
+        List<Banner> banners=new ArrayList<>();
+        //add banner using image url
+        banners.add(new RemoteBanner("http://admin.typdelhi.org/Images/Banner/banner1.jpg"));
+        banners.add(new RemoteBanner("http://admin.typdelhi.org/Images/Banner/banner2.jpg"));
+        banners.add(new RemoteBanner("http://admin.typdelhi.org/Images/Banner/banner3.jpg"));
+        banners.add(new RemoteBanner("http://admin.typdelhi.org/Images/Banner/banner4.jpg"));
+        //add banner using resource drawable
 
-        mPager = (ViewPager) findViewById(R.id.pager);
-
-
-        mPager.setAdapter(new SlidingImage_Adapter(Dashboard.this,ImagesArray));
-
-
-        CirclePageIndicator indicator = (CirclePageIndicator)
-                findViewById(R.id.indicator);
-
-        indicator.setViewPager(mPager);
-
-        final float density = getResources().getDisplayMetrics().density;
-
-//Set circle indicator radius
-        indicator.setRadius(5 * density);
-
-        NUM_PAGES =IMAGES.length;
-
-        // Auto start of viewpager
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == NUM_PAGES) {
-                    currentPage = 0;
-                }
-                mPager.setCurrentItem(currentPage++, true);
-            }
-        };
-        Timer swipeTimer = new Timer();
-        swipeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, 3000, 3000);
-
-        // Pager listener over indicator
-        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-                currentPage = position;
-
-            }
-
-            @Override
-            public void onPageScrolled(int pos, float arg1, int arg2) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int pos) {
-
-            }
-        });
-
+        bannerSlider.setBanners(banners);
     }
 }
