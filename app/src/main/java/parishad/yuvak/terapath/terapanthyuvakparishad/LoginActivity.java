@@ -2,6 +2,7 @@ package parishad.yuvak.terapath.terapanthyuvakparishad;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -40,11 +42,19 @@ public class LoginActivity extends AppCompatActivity {
     private EditText  inputEmail, inputPassword;
     private TextInputLayout  inputLayoutEmail, inputLayoutPassword;
     private Button btn_login;
-    JSONObject data_jobject,result_data;
+    JSONObject data_jobject;
     String email,password;
     String TAG = "LoginActivity_TAG";
     String UserId,EmailId,Password,MobileNumber,FirstName,Status;
     UserSessionManager session;
+    TextView forgot_password;
+
+    ProgressDialog pDialog;
+    String tag_json_obj = "json_obj_req";
+    String result="NA",response_string;
+
+    JSONObject data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         inputEmail = (EditText) findViewById(R.id.input_email);
         inputPassword = (EditText) findViewById(R.id.input_password);
         btn_login = (Button) findViewById(R.id.btn_login);
+        forgot_password=(TextView)findViewById(R.id.forgot_password);
 
         inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
         inputPassword.addTextChangedListener(new MyTextWatcher(inputPassword));
@@ -63,6 +74,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 submitForm();
+            }
+        });
+
+        forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent dashboard = new Intent(LoginActivity.this, ForgotPassword.class);
+                startActivity(dashboard);
             }
         });
 
@@ -170,45 +189,92 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-        String result= new CallMethodRequest().POSTCallMethodRequest(LoginActivity.this,UrlConstant.LOGIN_URL,data_jobject.toString());
+        pDialog = new ProgressDialog(LoginActivity.this);
+        pDialog.setMessage("Loading...");
+        pDialog.show();
 
-        Log.e("result",result);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                UrlConstant.LOGIN_URL, data_jobject,
+                new Response.Listener<JSONObject>() {
 
-        try {
-            result_data=new JSONObject(result);
-            Status=result_data.getString("Status");
-            if(Status.equals("true")) {
+                    @Override
+                    public void onResponse( JSONObject response) {
+                        Log.e(TAG, response.toString());
+                        try {
+                            String Status = response.getString("Status");
+                            response_string=response.toString();
+                            data=response;
+                            if (Status.equals("false")) {
 
-                UserId = result_data.getString("UserId");
-                EmailId = result_data.getString("EmailId");
-                Password = result_data.getString("Password");
-                MobileNumber = result_data.getString("MobileNumber");
-                FirstName = result_data.getString("FirstName");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
+                                        try {
+                                            dlgAlert.setMessage(data.getString("Message"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        dlgAlert.setPositiveButton("OK", null);
+                                        dlgAlert.setCancelable(true);
+                                        dlgAlert.create().show();
+                                    }
+                                });
 
-                session.createUserLoginSession(FirstName,EmailId,Password,UserId,MobileNumber);
-            Intent dashboard = new Intent(LoginActivity.this, Dashboard.class);
-            startActivity(dashboard);
-            finish();
-            }else{
-               runOnUiThread(new Runnable() {
+                            } else {
+                                        UserId = data.getString("UserId");
+                                        EmailId = data.getString("EmailId");
+                                        Password = data.getString("Password");
+                                        MobileNumber = data.getString("MobileNumber");
+                                        FirstName = data.getString("FirstName");
+
+                                        session.createUserLoginSession(FirstName,EmailId,Password,UserId,MobileNumber);
+                                        Intent dashboard = new Intent(LoginActivity.this, Dashboard.class);
+                                        dashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(dashboard);
+                                        finish();
+
+                            }
+
+                        } catch (Exception e) {
+
+                        }
+
+                        pDialog.hide();
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e(TAG, "Error: " + error.getMessage());
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
-                        try {
-                            dlgAlert.setMessage(result_data.getString("Message"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        dlgAlert.setMessage("Error while logging in, please try again");
                         dlgAlert.setPositiveButton("OK", null);
                         dlgAlert.setCancelable(true);
                         dlgAlert.create().show();
                     }
                 });
+                pDialog.hide();
             }
-//
-        }catch(Exception e){
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
 
-        }
+
+        };
+
+// Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+
+
+
 
 
         }

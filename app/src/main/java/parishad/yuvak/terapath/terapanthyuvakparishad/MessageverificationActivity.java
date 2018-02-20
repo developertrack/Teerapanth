@@ -297,8 +297,8 @@ public class MessageverificationActivity extends AppCompatActivity {
                                 });
 
                             }else{
-                                Intent verification=new Intent(MessageverificationActivity.this,Dashboard.class);
-                                verification.putExtra("regiterdeddata",response.toString());
+                                Intent verification=new Intent(MessageverificationActivity.this,LoginActivity.class);
+                                verification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(verification);
                             }
 

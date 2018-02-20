@@ -1,14 +1,17 @@
 package parishad.yuvak.terapath.terapanthyuvakparishad;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 import utils.AppController;
+import utils.CallMethodRequest;
 import utils.UrlConstant;
 
 public class ForgotPassword extends AppCompatActivity {
@@ -49,10 +53,9 @@ public class ForgotPassword extends AppCompatActivity {
 
     ProgressDialog pDialog;
     TextView counter;
-    String str_mobnumber;
     String TAG = "MessageVerificationActivity_TAG";
-    JSONObject data_jobject;
-    String otp,MobileNumber;
+    JSONObject data_jobject,json_forgot_password,result_data;
+    String otp,str_mobnumber,str_password,str_cpassword,Status;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
     @Override
@@ -69,6 +72,7 @@ public class ForgotPassword extends AppCompatActivity {
         btn_send=(Button)findViewById(R.id.btn_send);
         btn_confirm=(Button)findViewById(R.id.btn_confirm);
         counter=(TextView)findViewById(R.id.counter);
+
         input_layout_mobile_number=(TextInputLayout)findViewById(R.id.input_layout_mobile_number);
         input_mobile_number=(EditText)findViewById(R.id.input_mobile_number);
 
@@ -84,6 +88,7 @@ public class ForgotPassword extends AppCompatActivity {
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (!isValidMobile()) {
                     return;
                 }
@@ -96,24 +101,33 @@ public class ForgotPassword extends AppCompatActivity {
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+                if (!isValidOTP()) {
+                    return;
+                }
                 if (!validatePassword()) {
                     return;
                 }
                 if (!validateConfirmPassword()) {
                     return;
                 }
-                if (!isValidOTP()) {
-                    return;
-                }
 
-                ResendOtp();
+                str_password=input_password.getText().toString();
+                str_cpassword=input_cpassword.getText().toString();
+                otp=input_resendotp.getText().toString();
 
+                ForgotPasswordReset();
 
             }
         });
 
 
     }
+
+
+
 
     public void ResendOtp(){
 
@@ -251,7 +265,7 @@ public class ForgotPassword extends AppCompatActivity {
             if (intent.getAction().equalsIgnoreCase("otp")) {
                 final String txt_otp = intent.getStringExtra("message");
                 input_resendotp.setText(txt_otp);
-                btn_send.setClickable(true);
+
 
             }
         }
@@ -262,7 +276,7 @@ public class ForgotPassword extends AppCompatActivity {
         otp = input_resendotp.getText().toString().trim();
 
         if (otp.isEmpty() || otp.length()<4) {
-            input_layout_resendotp.setError("Not Valid Pincode");
+            input_layout_resendotp.setError("Not Valid OTP");
             requestFocus(input_layout_resendotp);
             return false;
         } else {
@@ -287,6 +301,7 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     private boolean validatePassword() {
+
         if (input_password.getText().toString().trim().isEmpty() && input_password.getText().toString().length()<6 ) {
             input_layout_password.setError(getString(R.string.err_msg_password));
             requestFocus(input_layout_password);
@@ -299,6 +314,7 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     private boolean validateConfirmPassword() {
+
         if (input_cpassword.getText().toString().trim().isEmpty() && input_cpassword.getText().toString().length()<6) {
             input_layout_cpassword.setError(getString(R.string.err_msg_password));
             requestFocus(input_layout_cpassword);
@@ -346,4 +362,135 @@ public class ForgotPassword extends AppCompatActivity {
         }
         return true;
     }
+
+    @Override
+    public void onResume() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("otp"));
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+    }
+
+
+    public void ForgotPasswordReset( ) {
+        final String response_string;
+
+        String tag_json_obj = "json_obj_req";
+
+        json_forgot_password = new JSONObject();
+        try {
+            json_forgot_password.put("MobileNumber", str_mobnumber);
+            json_forgot_password.put("NewPassword", str_password);
+            json_forgot_password.put("OTP", otp);
+        } catch (Exception e) {
+
+        }
+        Log.e("json_forgot_password",json_forgot_password.toString());
+
+
+        pDialog = new ProgressDialog(ForgotPassword.this);
+        pDialog.setMessage("Loading...");
+        pDialog.show();
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                UrlConstant.Forgot_Password_URL, json_forgot_password,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(final JSONObject response) {
+                        Log.e(TAG, response.toString());
+                        try {
+                            String Status = response.getString("Status");
+
+                            if (Status.equals("false")) {
+
+                               runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(ForgotPassword.this);
+                                        try {
+                                            dlgAlert.setMessage(response.getString("Message"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        dlgAlert.setPositiveButton("OK", null);
+                                        dlgAlert.setCancelable(true);
+                                        dlgAlert.create().show();
+                                    }
+                                });
+
+                            } else {
+                                try {
+                                    result_data=new JSONObject(response.toString());
+                                    Status=result_data.getString("Status");
+                                    if(Status.equals("true")) {
+                                        Intent dashboard = new Intent(ForgotPassword.this, LoginActivity.class);
+                                        dashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(dashboard);
+                                        finish();
+                                    }else{
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                AlertDialog.Builder dlgAlert = new AlertDialog.Builder(ForgotPassword.this);
+                                                try {
+                                                    dlgAlert.setMessage(result_data.getString("Message"));
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                dlgAlert.setPositiveButton("OK", null);
+                                                dlgAlert.setCancelable(true);
+                                                dlgAlert.create().show();
+                                            }
+                                        });
+                                    }
+
+                                }catch(Exception e){
+
+                                }
+
+                            }
+
+                        } catch (Exception e) {
+
+                        }
+
+                        pDialog.hide();
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e(TAG, "Error: " + error.getMessage());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(ForgotPassword.this);
+                        dlgAlert.setMessage("Error while logging in, please try again");
+                        dlgAlert.setPositiveButton("OK", null);
+                        dlgAlert.setCancelable(true);
+                        dlgAlert.create().show();
+                    }
+                });
+                pDialog.hide();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+
+
+        };
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+
+    }
+
 }
