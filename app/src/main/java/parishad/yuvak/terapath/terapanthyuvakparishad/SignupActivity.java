@@ -6,12 +6,11 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -38,13 +37,13 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import utils.AppController;
 import utils.UrlConstant;
 
 public class SignupActivity extends AppCompatActivity {
 
+    static EditText dob;
     String[] blood_group;
     String[] blood_group_id;
     String[] location_name;
@@ -57,7 +56,6 @@ public class SignupActivity extends AppCompatActivity {
     EditText email;
     EditText mobnumber;
     EditText bloodgroup;
-    static EditText dob;
     EditText location;
     EditText pincode;
     EditText confirmpassword;
@@ -69,6 +67,10 @@ public class SignupActivity extends AppCompatActivity {
     JSONObject data_jobject,data_post;
     StringRequest strReq,locationReq,postCreateUser;
     String str_bloodgroup,str_dob,str_location,str_firstname,str_lastname,str_email,str_mobnumber,str_pincode,str_password;
+
+    private static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +89,23 @@ public class SignupActivity extends AppCompatActivity {
         password=(EditText)findViewById(R.id.password);
 
         input_fname=(TextInputLayout)findViewById(R.id.input_fname);
+        input_fname.setVisibility(View.INVISIBLE);
         input_lname=(TextInputLayout)findViewById(R.id.input_lname);
+        input_lname.setVisibility(View.INVISIBLE);
         input_email=(TextInputLayout)findViewById(R.id.input_email);
+        input_email.setVisibility(View.INVISIBLE);
         input_mobnumber=(TextInputLayout)findViewById(R.id.input_mobnumber);
+        input_mobnumber.setVisibility(View.INVISIBLE);
         input_pincode=(TextInputLayout)findViewById(R.id.input_pincode);
+        input_pincode.setVisibility(View.INVISIBLE);
         input_confirmpassword=(TextInputLayout)findViewById(R.id.input_confirmpassword);
+        input_confirmpassword.setVisibility(View.INVISIBLE);
         input_password=(TextInputLayout)findViewById(R.id.input_password);
+        input_password.setVisibility(View.INVISIBLE);
         input_bloodgroup=(TextInputLayout)findViewById(R.id.input_bloodgroup);
         input_dob=(TextInputLayout)findViewById(R.id.input_dob);
         input_location=(TextInputLayout)findViewById(R.id.input_location);
+        input_location.setVisibility(View.INVISIBLE);
 
         btn_signup=(Button)findViewById(R.id.btn_signup);
 
@@ -146,6 +156,11 @@ public class SignupActivity extends AppCompatActivity {
                 if (!isValidLocation()) {
                     return;
                 }
+                if (!validatePasswordMatch()) {
+                    return;
+                }
+
+
 
 
                 createUser();
@@ -274,31 +289,6 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("ValidFragment")
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
-            dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
-            return  dialog;
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-           dob.setText(year + "-" + (month + 1) + "-" + day);
-        }
-    }
-
-    private static boolean isValidEmail(String email) {
-        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-
     private boolean validatePassword() {
         if (password.getText().toString().trim().isEmpty() && password.getText().toString().length()<6 ) {
             input_password.setError(getString(R.string.err_msg_password));
@@ -319,6 +309,30 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             input_confirmpassword.setErrorEnabled(false);
         }
+
+        if (!confirmpassword.getText().toString().trim().equals(password.getText().toString().trim())) {
+            input_confirmpassword.setError(getString(R.string.err_msg_password));
+            requestFocus(input_confirmpassword);
+            return false;
+        } else {
+            input_confirmpassword.setErrorEnabled(false);
+        }
+
+
+        return true;
+    }
+
+    private boolean validatePasswordMatch() {
+
+
+        if (!confirmpassword.getText().toString().trim().equals(password.getText().toString().trim())) {
+            input_confirmpassword.setError("Password Mismatch");
+            requestFocus(input_confirmpassword);
+            return false;
+        } else {
+            input_confirmpassword.setErrorEnabled(false);
+        }
+
 
         return true;
     }
@@ -351,63 +365,11 @@ public class SignupActivity extends AppCompatActivity {
         return true;
     }
 
-
-
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
-
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-
-                case R.id.input_email:
-                    validateEmail();
-                    break;
-                case R.id.input_password:
-                    validatePassword();
-                    break;
-                case R.id.input_confirmpassword:
-                    validateConfirmPassword();
-                    break;
-                case R.id.input_fname:
-                    validateFirstname();
-                    break;
-                case R.id.input_mobnumber:
-                    isValidMobile();
-                    break;
-                case R.id.input_pincode:
-                    isValidPincode();
-                    break;
-                case R.id.input_bloodgroup:
-                    isValidBloodGroup();
-                    break;
-                case R.id.input_dob:
-                    isValidDob();
-                    break;
-                case R.id.input_location:
-                    isValidLocation();
-                    break;
-
-            }
-        }
-    }
-
 
     private boolean isValidMobile() {
 
@@ -558,7 +520,7 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(SignupActivity.this);
-                        dlgAlert.setMessage("Error while logging in, please try again");
+                        dlgAlert.setMessage("Error while signup in, please try again");
                         dlgAlert.setPositiveButton("OK", null);
                         dlgAlert.setCancelable(true);
                         dlgAlert.create().show();
@@ -582,6 +544,75 @@ public class SignupActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
 
 
+    }
+
+    @SuppressLint("ValidFragment")
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+            return dialog;
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            dob.setText(year + "-" + (month + 1) + "-" + day);
+        }
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+
+                case R.id.input_email:
+                    validateEmail();
+                    break;
+                case R.id.input_password:
+                    validatePassword();
+                    break;
+                case R.id.input_confirmpassword:
+                    validateConfirmPassword();
+                    break;
+                case R.id.input_fname:
+                    validateFirstname();
+                    break;
+                case R.id.input_mobnumber:
+                    isValidMobile();
+                    break;
+                case R.id.input_pincode:
+                    isValidPincode();
+                    break;
+                case R.id.input_bloodgroup:
+                    isValidBloodGroup();
+                    break;
+                case R.id.input_dob:
+                    isValidDob();
+                    break;
+                case R.id.input_location:
+                    isValidLocation();
+                    break;
+
+            }
+        }
     }
 
 }

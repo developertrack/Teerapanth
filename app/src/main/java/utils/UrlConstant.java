@@ -14,5 +14,7 @@ public class UrlConstant {
     public static  String LOGIN_URL=base_url+"api/User/Login";
     public static  String VERIFY_URL=base_url+"api/User/VerifyOTP";
     public static  String Forgot_Password_URL=base_url+"api/User/ForgotPassword";
+    public static String USEFULL_LINK_URL = base_url + "api/User/GetUseFullLink";
+    public static String NEWS_URL = base_url + "api/User/GetNews";
 
 }

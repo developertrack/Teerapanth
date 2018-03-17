@@ -1,20 +1,19 @@
 package parishad.yuvak.terapath.terapanthyuvakparishad;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -41,22 +40,31 @@ import java.util.List;
 import java.util.Map;
 
 import utils.AppController;
-import utils.CallMethodRequest;
 import utils.UrlConstant;
 
 public class ForgotPassword extends AppCompatActivity {
 
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     TextInputLayout input_layout_resendotp,input_layout_cpassword,input_layout_password,input_layout_mobile_number;
     LinearLayout forgotpassword,resend_mobile_verify;
     EditText input_resendotp,input_password,input_cpassword,input_mobile_number;
     Button btn_send,btn_confirm;
-
     ProgressDialog pDialog;
     TextView counter;
     String TAG = "MessageVerificationActivity_TAG";
     JSONObject data_jobject,json_forgot_password,result_data;
     String otp,str_mobnumber,str_password,str_cpassword,Status;
-    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equalsIgnoreCase("otp")) {
+                final String txt_otp = intent.getStringExtra("message");
+                input_resendotp.setText(txt_otp);
+
+
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +82,21 @@ public class ForgotPassword extends AppCompatActivity {
         counter=(TextView)findViewById(R.id.counter);
 
         input_layout_mobile_number=(TextInputLayout)findViewById(R.id.input_layout_mobile_number);
+        input_layout_mobile_number.setVisibility(View.GONE);
         input_mobile_number=(EditText)findViewById(R.id.input_mobile_number);
 
         input_layout_resendotp=(TextInputLayout)findViewById(R.id.input_layout_resendotp);
+        input_layout_resendotp.setVisibility(View.GONE);
         input_resendotp=(EditText)findViewById(R.id.input_resendotp);
 
         input_layout_password=(TextInputLayout)findViewById(R.id.input_layout_password);
+
+        input_layout_password.setVisibility(View.GONE);
         input_password=(EditText)findViewById(R.id.input_password);
 
         input_layout_cpassword=(TextInputLayout)findViewById(R.id.input_layout_cpassword);
+
+        input_layout_cpassword.setVisibility(View.GONE);
         input_cpassword=(EditText)findViewById(R.id.input_cpassword);
 
         btn_send.setOnClickListener(new View.OnClickListener() {
@@ -125,9 +139,6 @@ public class ForgotPassword extends AppCompatActivity {
 
 
     }
-
-
-
 
     public void ResendOtp(){
 
@@ -224,53 +235,6 @@ public class ForgotPassword extends AppCompatActivity {
 
     }
 
-
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-
-                case R.id.input_mobile_number:
-                    isValidMobile();
-                    break;
-                case R.id.input_password:
-                    validatePassword();
-                    break;
-                case R.id.input_cpassword:
-                    validateConfirmPassword();
-                    break;
-                case R.id.input_otp:
-                    isValidOTP();
-                    break;
-
-            }
-        }
-    }
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equalsIgnoreCase("otp")) {
-                final String txt_otp = intent.getStringExtra("message");
-                input_resendotp.setText(txt_otp);
-
-
-            }
-        }
-    };
-
     private boolean isValidOTP() {
 
         otp = input_resendotp.getText().toString().trim();
@@ -284,7 +248,6 @@ public class ForgotPassword extends AppCompatActivity {
         }
         return true;
     }
-
 
     private boolean isValidMobile() {
 
@@ -325,8 +288,6 @@ public class ForgotPassword extends AppCompatActivity {
 
         return true;
     }
-
-
 
     private void requestFocus(View view) {
         if (view.requestFocus()) {
@@ -374,7 +335,6 @@ public class ForgotPassword extends AppCompatActivity {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
-
 
     public void ForgotPasswordReset( ) {
         final String response_string;
@@ -491,6 +451,40 @@ public class ForgotPassword extends AppCompatActivity {
 
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
 
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+
+                case R.id.input_mobile_number:
+                    isValidMobile();
+                    break;
+                case R.id.input_password:
+                    validatePassword();
+                    break;
+                case R.id.input_cpassword:
+                    validateConfirmPassword();
+                    break;
+                case R.id.input_otp:
+                    isValidOTP();
+                    break;
+
+            }
+        }
     }
 
 }

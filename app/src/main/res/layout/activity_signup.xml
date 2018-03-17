@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Registration"
-        android:textColor="@color/appcolor" />
+        android:textColor="@color/appcolor"
+        android:textSize="18sp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -43,8 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="2dp">
-
+                    android:padding="2dp"></android.support.design.widget.TextInputLayout>
                     <EditText
                         android:id="@+id/first_name"
                         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                         android:hint="@string/hint_fname"
                         android:inputType="text"
                         android:padding="4dp" />
-                </android.support.design.widget.TextInputLayout>
+
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_lname"
@@ -63,6 +63,7 @@
                     android:layout_weight="1"
                     android:padding="2dp">
 
+                </android.support.design.widget.TextInputLayout>
                     <EditText
                         android:id="@+id/last_name"
                         android:layout_width="match_parent"
@@ -72,7 +73,6 @@
                         android:hint="@string/hint_lname"
                         android:inputType="text"
                         android:padding="4dp" />
-                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -81,6 +81,7 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp">
 
+            </android.support.design.widget.TextInputLayout>
                 <EditText
                     android:id="@+id/email"
                     android:layout_width="match_parent"
@@ -90,14 +91,14 @@
                     android:hint="@string/hint_email"
                     android:inputType="textEmailAddress"
                     android:padding="4dp" />
-            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_mobnumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:id="@+id/input_mobnumber">
+                android:padding="2dp">
 
+            </android.support.design.widget.TextInputLayout>
                 <EditText
                     android:id="@+id/mobnumber"
                     android:layout_width="match_parent"
@@ -108,13 +109,13 @@
                     android:inputType="phone"
                     android:maxLength="10"
                     android:padding="4dp" />
-            </android.support.design.widget.TextInputLayout>
 
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="2dp">
 
 
                 <android.support.design.widget.TextInputLayout
@@ -122,39 +123,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="2dp">
+                    android:padding="2dp"
+                    android:visibility="gone">
 
-                    <EditText
-                        android:id="@+id/bloodgroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/btn_normal"
-                        android:gravity="center_horizontal"
-                        android:hint="@string/hint_blood"
-                        android:inputType="text"
-                        android:focusable="false"
-                        android:padding="4dp" />
                 </android.support.design.widget.TextInputLayout>
-
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="2dp">
+                    android:padding="2dp"
+                    android:visibility="gone">
+
+                </android.support.design.widget.TextInputLayout>
+
+                    <EditText
+                        android:id="@+id/bloodgroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_normal"
+                        android:focusable="false"
+                        android:gravity="center_horizontal"
+                        android:hint="@string/hint_blood"
+                        android:inputType="text"
+                        android:padding="4dp" />
+
 
                     <EditText
                         android:id="@+id/dob"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:background="@drawable/btn_normal"
+                        android:focusable="false"
                         android:gravity="center_horizontal"
                         android:hint="@string/hint_dob"
                         android:inputType="number"
-                        android:focusable="false"
                         android:padding="4dp" />
-                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
         <LinearLayout
@@ -169,17 +176,17 @@
                 android:layout_weight="1"
                 android:padding="2dp">
 
+            </android.support.design.widget.TextInputLayout>
                 <EditText
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_normal"
+                    android:focusable="false"
                     android:gravity="center_horizontal"
                     android:hint="@string/hint_location"
                     android:inputType="text"
-                    android:focusable="false"
                     android:padding="4dp" />
-            </android.support.design.widget.TextInputLayout>
 
 
             <android.support.design.widget.TextInputLayout
@@ -189,6 +196,7 @@
                 android:layout_weight="1"
                 android:padding="2dp">
 
+            </android.support.design.widget.TextInputLayout>
                 <EditText
                     android:id="@+id/pincode"
                     android:layout_width="match_parent"
@@ -198,7 +206,6 @@
                     android:hint="@string/hint_pincode"
                     android:inputType="number"
                     android:padding="4dp" />
-            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_password"
@@ -206,6 +213,7 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp">
 
+            </android.support.design.widget.TextInputLayout>
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
@@ -215,7 +223,6 @@
                     android:hint="@string/hint_password"
                     android:inputType="textPassword"
                     android:padding="4dp" />
-            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_confirmpassword"
@@ -223,6 +230,7 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp">
 
+            </android.support.design.widget.TextInputLayout>
                 <EditText
                     android:id="@+id/confirmpassword"
                     android:layout_width="match_parent"
@@ -232,7 +240,6 @@
                     android:hint="@string/hint_confirm_password"
                     android:inputType="textPassword"
                     android:padding="4dp" />
-            </android.support.design.widget.TextInputLayout>
 
 
             <Button

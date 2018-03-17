@@ -1,13 +1,11 @@
 package parishad.yuvak.terapath.terapanthyuvakparishad;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -33,27 +30,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 import utils.AppController;
-import utils.CallMethodRequest;
 import utils.UrlConstant;
 import utils.UserSessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText  inputEmail, inputPassword;
-    private TextInputLayout  inputLayoutEmail, inputLayoutPassword;
-    private Button btn_login;
     JSONObject data_jobject;
     String email,password;
     String TAG = "LoginActivity_TAG";
     String UserId,EmailId,Password,MobileNumber,FirstName,Status;
     UserSessionManager session;
     TextView forgot_password;
-
     ProgressDialog pDialog;
     String tag_json_obj = "json_obj_req";
     String result="NA",response_string;
-
     JSONObject data;
+    private EditText inputEmail, inputPassword;
+    private TextInputLayout inputLayoutEmail, inputLayoutPassword;
+    private Button btn_login;
+
+    private static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +59,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
+        inputLayoutEmail.setVisibility(View.INVISIBLE);
         inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
+        inputLayoutPassword.setVisibility(View.INVISIBLE);
         inputEmail = (EditText) findViewById(R.id.input_email);
         inputPassword = (EditText) findViewById(R.id.input_password);
         btn_login = (Button) findViewById(R.id.btn_login);
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
         email = inputEmail.getText().toString().trim();
 
         if (email.isEmpty() || !isValidEmail(email)) {
-            inputLayoutEmail.setError(getString(R.string.err_msg_email));
+//            inputLayoutEmail.setError(getString(R.string.err_msg_email));
             requestFocus(inputEmail);
             return false;
         } else {
@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validatePassword() {
         password = inputPassword.getText().toString().trim();
         if (inputPassword.getText().toString().trim().isEmpty()) {
-            inputLayoutPassword.setError(getString(R.string.err_msg_password));
+//            inputLayoutPassword.setError(getString(R.string.err_msg_password));
             requestFocus(inputPassword);
             return false;
         } else {
@@ -135,43 +135,11 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private static boolean isValidEmail(String email) {
-        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
-
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-
-                case R.id.input_email:
-                    validateEmail();
-                    break;
-                case R.id.input_password:
-                    validatePassword();
-                    break;
-            }
-        }
-    }
-
 
     public void userLogin() {
 
@@ -278,6 +246,33 @@ public class LoginActivity extends AppCompatActivity {
 
 
         }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+
+                case R.id.input_email:
+                    validateEmail();
+                    break;
+                case R.id.input_password:
+                    validatePassword();
+                    break;
+            }
+        }
+    }
 
 
 }

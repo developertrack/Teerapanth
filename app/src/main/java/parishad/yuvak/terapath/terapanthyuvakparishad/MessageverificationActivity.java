@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -14,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,16 +42,25 @@ import utils.UrlConstant;
 
 public class MessageverificationActivity extends AppCompatActivity {
 
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     TextView resend,counter;
     EditText input_otp;
     ProgressDialog pDialog;
     TextInputLayout input_layout_otp;
     Button btn_signup;
     String TAG = "MessageVerificationActivity_TAG";
-    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
-
     JSONObject data_jobject,data_jobject1,data_jobject2;
     String otp,UserId,MobileNumber;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equalsIgnoreCase("otp")) {
+                final String txt_otp = intent.getStringExtra("message");
+                input_otp.setText(txt_otp);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +82,7 @@ public class MessageverificationActivity extends AppCompatActivity {
         resend=(TextView)findViewById(R.id.resend);
         input_otp=(EditText)findViewById(R.id.input_otp);
         input_layout_otp=(TextInputLayout)findViewById(R.id.input_layout_otp);
+        input_layout_otp.setVisibility(View.INVISIBLE);
         btn_signup=(Button)findViewById(R.id.btn_signup);
 
         counter=(TextView)findViewById(R.id.counter);
@@ -122,21 +132,12 @@ public class MessageverificationActivity extends AppCompatActivity {
         });
 
     }
+
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equalsIgnoreCase("otp")) {
-                final String txt_otp = intent.getStringExtra("message");
-                input_otp.setText(txt_otp);
-            }
-        }
-    };
 
     private boolean isValidOTP() {
 
@@ -220,7 +221,7 @@ public class MessageverificationActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(MessageverificationActivity.this);
-                        dlgAlert.setMessage("Error while logging in, please try again");
+                        dlgAlert.setMessage("Error, please try again");
                         dlgAlert.setPositiveButton("OK", null);
                         dlgAlert.setCancelable(true);
                         dlgAlert.create().show();

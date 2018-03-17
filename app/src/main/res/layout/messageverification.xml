@@ -3,26 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        app:srcCompat="@drawable/logo"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="50dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
         android:text="Please enter verification code sent to mobile number"
         android:textColor="@android:color/black" />
+
+
+
+    <EditText
+        android:id="@+id/input_otp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_normal"
+        android:gravity="center_horizontal"
+        android:hint="Enter OTP"
+        android:inputType="number"
+        android:padding="8dp" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_otp"
@@ -30,23 +42,13 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-    <EditText
-        android:id="@+id/input_otp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:padding="8dp"
-        android:gravity="center_horizontal"
-        android:hint="Enter OTP"
-        android:background="@drawable/btn_normal"/>
-
     </android.support.design.widget.TextInputLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_margin="4dp"
         android:gravity="right"
-        android:layout_margin="4dp">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/counter"
@@ -62,19 +64,19 @@
         android:id="@+id/resend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="RESEND OTP"
         android:layout_margin="6dp"
-        android:textColor="@color/appcolor"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:text="RESEND OTP"
+        android:textColor="@color/appcolor" />
 
 
     <Button android:id="@+id/btn_signup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="CONFIRM"
-        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/btn_pressed"
+        android:text="CONFIRM"
         android:textColor="@android:color/white"/>
 
 
