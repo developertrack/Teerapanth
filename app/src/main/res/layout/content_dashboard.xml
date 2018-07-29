@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,20 +40,22 @@
         android:orientation="horizontal">
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/news"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
                     android:background="@drawable/ic_news"
                     />
@@ -59,20 +72,22 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/events"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
                     android:background="@drawable/ic_events"
                     />
@@ -88,20 +103,22 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/awardsachieve"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
                     android:background="@drawable/ic_awards"
                     />
@@ -123,20 +140,22 @@
         android:orientation="horizontal">
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/bloodrequest"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
                     android:background="@drawable/ic_blooddonor"
                     />
@@ -145,7 +164,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:gravity="center_horizontal"
-                    android:text="WANT TO BE DONOR"
+                    android:text="BlOOD REQUIRED"
+                    android:padding="4dp"
+                    android:textSize="12sp"
                     android:textColor="@color/appcolor" />
             </LinearLayout>
 
@@ -153,20 +174,22 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/workingcomitte"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
                     android:background="@drawable/ic_workingcomittee"
                     />
@@ -176,26 +199,30 @@
                     android:layout_marginBottom="4dp"
                     android:gravity="center_horizontal"
                     android:text="WORKING COMMITTEE"
+                    android:padding="4dp"
+                    android:textSize="12sp"
                     android:textColor="@color/appcolor" />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/gallery"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
                     android:background="@drawable/ic_membersdirectory"
                     />
@@ -204,7 +231,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:gravity="center_horizontal"
-                    android:text="MEMBER DIRECTORY"
+                    android:text="GALLERY"
+                    android:padding="4dp"
+                    android:textSize="12sp"
                     android:textColor="@color/appcolor" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -217,14 +246,15 @@
         android:orientation="horizontal">
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/memberdir"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -232,6 +262,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="4dp"
+                    android:layout_gravity="center_horizontal"
                     android:background="@drawable/ic_applyformembership"
                     />
                 <TextView
@@ -239,7 +270,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:gravity="center_horizontal"
-                    android:text="APPLY FOR MEMBERSHIP"
+                    android:text="MEMBERS DIRECTORY"
+                    android:padding="4dp"
+                    android:textSize="12sp"
                     android:textColor="@color/appcolor" />
             </LinearLayout>
 
@@ -247,64 +280,86 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1">
 
             <LinearLayout
-                android:id="@+id/usefull_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/kishoremandal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
-                    android:background="@drawable/ic_usefullinks"
-                    />
+                    android:background="@mipmap/ic_launcher"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:gravity="center_horizontal"
-                    android:text="USEFUL LINKS"
+                    android:text="KISHORE MANDAL"
+                    android:padding="4dp"
+                    android:textSize="12sp"
                     android:textColor="@color/appcolor" />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:visibility="invisible">
+            android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/extypmember"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
-                    android:background="@drawable/ic_news"
+                    android:background="@mipmap/ic_launcher"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:gravity="center_horizontal"
-                    android:text="NEWS"
+                    android:text="EX-MEMBERS"
+                    android:padding="4dp"
+                    android:textSize="12sp"
                     android:textColor="@color/appcolor" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
     </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/bannerads"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/unnamed1"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
+            />
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

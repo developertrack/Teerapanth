@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void submitForm() {
 
-        if (!validateEmail()) {
+        if (inputEmail.getText().toString().length()==0) {
             return;
         }
 
@@ -190,6 +190,22 @@ public class LoginActivity extends AppCompatActivity {
                                 });
 
                             } else {
+
+//
+//                                "Status": true,
+//                                        "Message": "User Profile Details",
+//                                        "UserId": 27,
+//                                        "EmailId": "piyushpsengar@gmail.com",
+//                                        "Password": "123456",
+//                                        "FirstName": "piyush",
+//                                        "LastName": "NA",
+//                                        "MobileNumber": "9958912923",
+//                                        "Location": null,
+//                                        "NativePlace": "UTTAR PRADESH",
+//                                        "PinCode": "201010",
+//                                        "Zone": "NA",
+//                                        "ZoneId": 0
+
                                         UserId = data.getString("UserId");
                                         EmailId = data.getString("EmailId");
                                         Password = data.getString("Password");
@@ -197,7 +213,8 @@ public class LoginActivity extends AppCompatActivity {
                                         FirstName = data.getString("FirstName");
 
                                         session.createUserLoginSession(FirstName,EmailId,Password,UserId,MobileNumber);
-                                        Intent dashboard = new Intent(LoginActivity.this, Dashboard.class);
+                                        Intent dashboard = new Intent(LoginActivity.this, LoginUserDashboard.class);
+                                        dashboard.putExtra("logintype","user");
                                         dashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(dashboard);
                                         finish();

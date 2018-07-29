@@ -106,10 +106,6 @@ public class MessageverificationActivity extends AppCompatActivity {
 
             public void onTick(long millisUntilFinished) {
                 counter.setText("" + millisUntilFinished / 1000);
-                //here you can have your logic to set text to edittext
-//                if(counter.getText().toString().trim().equals("0")){
-//
-//                }
 
             }
 

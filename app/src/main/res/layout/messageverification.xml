@@ -64,7 +64,7 @@
         android:id="@+id/resend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
+        android:layout_margin="8dp"
         android:gravity="center_horizontal"
         android:text="RESEND OTP"
         android:textColor="@color/appcolor" />

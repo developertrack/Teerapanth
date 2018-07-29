@@ -16,11 +16,14 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -50,7 +53,6 @@ public class SignupActivity extends AppCompatActivity {
     String[] location_name_id;
     ArrayAdapter<String> location_name_group;
     ArrayAdapter<String> spinner_blood_group;
-    TextInputLayout input_fname,input_lname,input_email,input_mobnumber,input_bloodgroup,input_dob,input_location,input_pincode,input_confirmpassword,input_password;
     EditText first_name;
     EditText last_name;
     EditText email;
@@ -88,24 +90,6 @@ public class SignupActivity extends AppCompatActivity {
         confirmpassword=(EditText)findViewById(R.id.confirmpassword);
         password=(EditText)findViewById(R.id.password);
 
-        input_fname=(TextInputLayout)findViewById(R.id.input_fname);
-        input_fname.setVisibility(View.INVISIBLE);
-        input_lname=(TextInputLayout)findViewById(R.id.input_lname);
-        input_lname.setVisibility(View.INVISIBLE);
-        input_email=(TextInputLayout)findViewById(R.id.input_email);
-        input_email.setVisibility(View.INVISIBLE);
-        input_mobnumber=(TextInputLayout)findViewById(R.id.input_mobnumber);
-        input_mobnumber.setVisibility(View.INVISIBLE);
-        input_pincode=(TextInputLayout)findViewById(R.id.input_pincode);
-        input_pincode.setVisibility(View.INVISIBLE);
-        input_confirmpassword=(TextInputLayout)findViewById(R.id.input_confirmpassword);
-        input_confirmpassword.setVisibility(View.INVISIBLE);
-        input_password=(TextInputLayout)findViewById(R.id.input_password);
-        input_password.setVisibility(View.INVISIBLE);
-        input_bloodgroup=(TextInputLayout)findViewById(R.id.input_bloodgroup);
-        input_dob=(TextInputLayout)findViewById(R.id.input_dob);
-        input_location=(TextInputLayout)findViewById(R.id.input_location);
-        input_location.setVisibility(View.INVISIBLE);
 
         btn_signup=(Button)findViewById(R.id.btn_signup);
 
@@ -159,9 +143,6 @@ public class SignupActivity extends AppCompatActivity {
                 if (!validatePasswordMatch()) {
                     return;
                 }
-
-
-
 
                 createUser();
 
@@ -285,17 +266,51 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        showAd();
+
+    }
 
 
+
+    public void showAd(){
+        Dialog mSplashDialog;
+        Calendar calendar = Calendar.getInstance();
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        int seconds = calendar.get(Calendar.SECOND);
+
+        mSplashDialog = new Dialog(this);
+
+        mSplashDialog.requestWindowFeature((int) Window.FEATURE_NO_TITLE);
+
+        mSplashDialog.setContentView(R.layout.interstial_ads);
+
+        ImageView splash=(ImageView)mSplashDialog.findViewById(R.id.splash);
+
+        int[] myImageList = new int[]{R.drawable.luka,R.drawable.oswal};
+
+        if(seconds%2==0){
+            splash.setImageResource(R.drawable.luka);
+        }else{
+            splash.setImageResource(R.drawable.oswal);
+        }
+
+        mSplashDialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        mSplashDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        mSplashDialog.setCancelable(true);
+
+        mSplashDialog.show();
     }
 
     private boolean validatePassword() {
         if (password.getText().toString().trim().isEmpty() && password.getText().toString().length()<6 ) {
-            input_password.setError(getString(R.string.err_msg_password));
-            requestFocus(input_password);
+
+            Toast.makeText(SignupActivity.this,getString(R.string.err_msg_password),Toast.LENGTH_LONG).show();
             return false;
         } else {
-            input_password.setErrorEnabled(false);
+
         }
 
         return true;
@@ -303,19 +318,21 @@ public class SignupActivity extends AppCompatActivity {
 
     private boolean validateConfirmPassword() {
         if (confirmpassword.getText().toString().trim().isEmpty() && confirmpassword.getText().toString().length()<6) {
-            input_confirmpassword.setError(getString(R.string.err_msg_password));
-            requestFocus(input_confirmpassword);
+
+            Toast.makeText(SignupActivity.this,getString(R.string.err_msg_password),Toast.LENGTH_LONG).show();
+
             return false;
         } else {
-            input_confirmpassword.setErrorEnabled(false);
+
         }
 
         if (!confirmpassword.getText().toString().trim().equals(password.getText().toString().trim())) {
-            input_confirmpassword.setError(getString(R.string.err_msg_password));
-            requestFocus(input_confirmpassword);
+
+            Toast.makeText(SignupActivity.this,getString(R.string.err_msg_password),Toast.LENGTH_LONG).show();
+
             return false;
         } else {
-            input_confirmpassword.setErrorEnabled(false);
+
         }
 
 
@@ -326,11 +343,11 @@ public class SignupActivity extends AppCompatActivity {
 
 
         if (!confirmpassword.getText().toString().trim().equals(password.getText().toString().trim())) {
-            input_confirmpassword.setError("Password Mismatch");
-            requestFocus(input_confirmpassword);
+           Toast.makeText(SignupActivity.this,"Password Mismatch",Toast.LENGTH_LONG).show();
+
             return false;
         } else {
-            input_confirmpassword.setErrorEnabled(false);
+
         }
 
 
@@ -341,11 +358,11 @@ public class SignupActivity extends AppCompatActivity {
         String email1 = email.getText().toString().trim();
 
         if (email1.isEmpty() || !isValidEmail(email1)) {
-            input_email.setError(getString(R.string.err_msg_email));
-            requestFocus(input_email);
+             Toast.makeText(SignupActivity.this,getString(R.string.err_msg_email),Toast.LENGTH_LONG).show();
+
             return false;
         } else {
-            input_email.setErrorEnabled(false);
+
         }
 
         return true;
@@ -355,11 +372,11 @@ public class SignupActivity extends AppCompatActivity {
         str_firstname = first_name.getText().toString().trim();
 
         if (str_firstname.isEmpty()) {
-            input_fname.setError(getString(R.string.err_msg_email));
-            requestFocus(input_fname);
+           Toast.makeText(SignupActivity.this,"Please enter  name",Toast.LENGTH_LONG).show();
+
             return false;
         } else {
-            input_fname.setErrorEnabled(false);
+
         }
 
         return true;
@@ -376,11 +393,12 @@ public class SignupActivity extends AppCompatActivity {
         str_mobnumber = mobnumber.getText().toString().trim();
 
         if (str_mobnumber.isEmpty() || str_mobnumber.length()<10 ) {
-            input_mobnumber.setError("Not Valid Number");
-            requestFocus(input_mobnumber);
+
+            Toast.makeText(SignupActivity.this,"Not Valid Number",Toast.LENGTH_LONG).show();
+
             return false;
         } else {
-            input_mobnumber.setErrorEnabled(false);
+
         }
 
         return true;
@@ -391,11 +409,12 @@ public class SignupActivity extends AppCompatActivity {
         str_pincode = pincode.getText().toString().trim();
 
         if (str_pincode.isEmpty() || str_pincode.length()<6) {
-            input_pincode.setError("Not Valid Pincode");
-            requestFocus(input_pincode);
+            Toast.makeText(SignupActivity.this,"Not Valid Pincode",Toast.LENGTH_LONG).show();
+
+
             return false;
         } else {
-            input_pincode.setErrorEnabled(false);
+
         }
         return true;
     }
@@ -405,11 +424,11 @@ public class SignupActivity extends AppCompatActivity {
         str_bloodgroup = bloodgroup.getText().toString().trim();
 
         if (str_bloodgroup.isEmpty() ) {
-            input_bloodgroup.setError("Select Blood Group");
-            requestFocus(input_bloodgroup);
+            Toast.makeText(SignupActivity.this,"Select Blood Group",Toast.LENGTH_LONG).show();
+
             return false;
         } else {
-            input_bloodgroup.setErrorEnabled(false);
+
         }
         return true;
     }
@@ -419,11 +438,11 @@ public class SignupActivity extends AppCompatActivity {
         str_location = location.getText().toString().trim();
 
         if (str_location.isEmpty() ) {
-            input_location.setError("Select Location");
-            requestFocus(input_location);
+            Toast.makeText(SignupActivity.this,"Select Location",Toast.LENGTH_LONG).show();
+
             return false;
         } else {
-            input_location.setErrorEnabled(false);
+
         }
         return true;
     }
@@ -433,11 +452,12 @@ public class SignupActivity extends AppCompatActivity {
         str_dob = dob.getText().toString().trim();
 
         if (str_dob.isEmpty() ) {
-            input_dob.setError("Set Date of birth");
-            requestFocus(input_dob);
+
+            Toast.makeText(SignupActivity.this,"Set date of birth",Toast.LENGTH_LONG).show();
+
             return false;
         } else {
-            input_dob.setErrorEnabled(false);
+
         }
         return true;
     }
@@ -566,53 +586,6 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-    private class MyTextWatcher implements TextWatcher {
 
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-
-                case R.id.input_email:
-                    validateEmail();
-                    break;
-                case R.id.input_password:
-                    validatePassword();
-                    break;
-                case R.id.input_confirmpassword:
-                    validateConfirmPassword();
-                    break;
-                case R.id.input_fname:
-                    validateFirstname();
-                    break;
-                case R.id.input_mobnumber:
-                    isValidMobile();
-                    break;
-                case R.id.input_pincode:
-                    isValidPincode();
-                    break;
-                case R.id.input_bloodgroup:
-                    isValidBloodGroup();
-                    break;
-                case R.id.input_dob:
-                    isValidDob();
-                    break;
-                case R.id.input_location:
-                    isValidLocation();
-                    break;
-
-            }
-        }
-    }
 
 }

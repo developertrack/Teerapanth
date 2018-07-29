@@ -42,6 +42,7 @@
         <activity
             android:name=".MessageverificationActivity"
             android:screenOrientation="portrait" />
+        <activity android:name="LoginUserDashboard"/>
 
         <receiver android:name="utils.SmsReceiver">
             <intent-filter>
